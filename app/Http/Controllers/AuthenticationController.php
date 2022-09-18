@@ -36,7 +36,7 @@ class AuthenticationController extends Controller
         $user->password = bcrypt(request()->password);
 
         if($user->save()){
-            redirect('/login',200);
+            return redirect('/login');
         }
         else{
             return view('register');

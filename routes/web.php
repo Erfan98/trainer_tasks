@@ -3,6 +3,8 @@
 use App\Http\Controllers\AuthenticationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\keyGenController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,5 +33,20 @@ Route::get('logout',function(){
     Auth::logout();
     return redirect('/');
 });
+
+Route::get('/getinfo/{id}',function($id){
+    $user = new User();
+    $user = $user->findOrFail($id);
+    return $user;
+});
+Route::get('/key_gen',[KeyGenController::class,'show']);
+Route::get('/generate_key/{id}/{duration}',[KeyGenController::class,'generate']);
+
+Route::get('/activate_key',function(){
+    return view('activate_key');
+});
+Route::get('/active/{key}/',[KeyGenController::class,'activateKey']);
+
+
 Route::post('/register',[AuthenticationController::class,'store']);
 Route::post('/login',[AuthenticationController::class,'login']);
